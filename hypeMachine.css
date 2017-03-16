@@ -1,0 +1,67 @@
+
+html {
+  font-size: 16px;
+}
+
+.nav-cust {
+  padding:1px;
+  margin-bottom: 2rem;
+}
+
+.main-disp-contain {
+
+}
+
+.graph , .twitt-scroller, .tweet-box, .watson-total{
+  border: 1px solid grey;
+  border-radius: 2px;
+}
+
+.graph {
+  height: 70vh;
+}
+
+.watson-total, .twitt-scroller {
+  margin-top: 2rem;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+.twitt-scroller, .tweet-box, .sentiment {
+  padding: 0rem;
+
+}
+
+.twitt-scroller {
+  overflow-y: scroll;
+  height: 21rem;
+  margin-bottom: 5rem;
+}
+
+.img-float-text-wrap {
+  float: left;
+  margin:.3rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.turn-off-padding {
+  padding: 0;
+}
+
+.tweet-text {
+  padding:.1rem;
+}
+
+.tweet-box {
+  padding: .3rem .2rem .3rem .2rem;
+  border-radius: 10px;
+}
+
+.btcwdgt-chart {
+  height: inherit;
+  width: 60%;
+}
