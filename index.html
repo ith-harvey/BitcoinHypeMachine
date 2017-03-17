@@ -31,36 +31,55 @@
                     <li><a href="#">About</a></li>
                 </ul>
             </div>
+            <div class="col-xs-6 heading-descriptor-text">
+                <img src="images/IBM_Watson_avatar_pos-2-1000x986.png" alt="Watson logo">
+                <img src="images/opengraph.png" alt="btc logo">
+                <img src="images/Twitter-PNG-HD-1.png" alt="Twitter logo">
+                <p>An API agrigator that filters tweets from influential bitcoin accounts through IBM's Watson AI using sentiment analysis.
+                </p>
+            </div>
         </nav>
     </header>
     <div class="col-xs-12 main-disp-contain">
         <div class="col-xs-4">
             <div class="watson-total col-xs-12">
-                <h2 class="col-xs-12 turn-off-padding">Watson's Hype detector</h2>
-                <div class="col-xs-5 col-centered">
-                    <h2 id="watson-percent-total">70%</h2>
+                <h2 class="col-xs-12 turn-off-padding">Hype Machine Breakdown</h2>
+                <div class="col-xs-6">
+                    <h4 class="mini-heading"># of Tweets Pulled</h4>
                 </div>
-                <h3 class="col-xs-8 col-centered turn-off-padding">The hype is bullish</h3>
-            </div>
-            <div class="twitt-scroller pre-scrollable col-xs-12">
-                <div class="tweet-box col-xs-12">
-                    <div class="col-xs-10 turn-off-padding">
-                        <div class="tweet-txt">
-                            <img class="thumbnail img-float-text-wrap" src=http://placehold.it/30x30>TweetTweetTweet TweetTweetTweet TweetTweet TweetTweet TweetTweet TweetTweet Tweet
-                        </div>
-                    </div>
-                    <div class="col-xs-2">
-                        <p>Feeling</p>
-                        <p>70%</p>
-                    </div>
+                <div class="col-xs-6">
+                    <h4 class="mini-heading"># of Tweets Filtered</h4>
+                </div>
+                <div class="col-xs-6">
+                    <h4 id="total-tweets-pulled" class="turn-off-padding"></h4>
+                </div>
+                <div class="col-xs-6">
+                    <h4 id="total-tweets-filtered" class="turn-off-padding"></h4>
                 </div>
             </div>
-        </div>
-        <div class="graph col-xs-8">
-            <!-- <div class="btcwdgt-chart" bw-theme="light"></div> -->
-            <canvas id="btc-price-chart" width="400" height="300"></canvas>
-            <canvas id="wats-score-chart" width="400" height="300"></canvas>
-        </div>
+        <div class="twitt-scroller pre-scrollable col-xs-12">
+            <!-- <div class="tweet-box col-xs-12">
+                <div class="col-xs-10 turn-off-padding">
+                  <img class="col-xs-2 thumbnail img-float-text-wrap" src=https://placehold.it/30x30>
+                  <h6 class=" username col-xs-8">UserName</h6>
+                </div>
+                <div class="col-xs-2">
+                    <p>Feeling</p>
+                    <p>70%</p>
+                </div>
+                <div class="tweet-txt col-xs-12">
+                    TweetTweetTweet TweetTweetTweet TweetTweet TweetTweet TweetTweet TweetTweet Tweet
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+    <div class="graph col-xs-8">
+        <!-- <div class="btcwdgt-chart" bw-theme="light"></div> -->
+        <canvas id="btc-price-chart" width="350" height="300"></canvas>
+        <canvas id="wats-score-chart" width="350" height="300"></canvas>
+    </div>
+    </div>
     </div>
     </div>
     <script src="hypeMachine.js" type="text/javascript"></script>

@@ -8,8 +8,16 @@ html {
   margin-bottom: 2rem;
 }
 
-.main-disp-contain {
+.heading-descriptor-text {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 
+}
+
+.heading-descriptor-text img {
+  width:5rem;
+  height:5rem;
+  margin: 0 .5rem 2rem .5rem;
 }
 
 .twitt-scroller, .tweet-box, .watson-total{
@@ -21,7 +29,7 @@ html {
   height: 70vh;
 }
 
-.watson-total, .twitt-scroller {
+.twitt-scroller {
   margin-top: 2rem;
 }
 
@@ -54,11 +62,16 @@ html {
 
 .tweet-text {
   padding:.1rem;
+  margin-bottom: .5rem;
 }
 
 .tweet-box {
   padding: .3rem .2rem .3rem .2rem;
   border-radius: 10px;
+}
+
+#total-tweets-pulled {
+  display: none;
 }
 
 .btcwdgt-chart {
