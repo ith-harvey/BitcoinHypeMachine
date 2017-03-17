@@ -12,7 +12,7 @@ html {
 
 }
 
-.graph , .twitt-scroller, .tweet-box, .watson-total{
+.twitt-scroller, .tweet-box, .watson-total{
   border: 1px solid grey;
   border-radius: 2px;
 }

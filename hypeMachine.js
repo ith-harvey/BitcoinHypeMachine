@@ -1,37 +1,21 @@
-console.log("linked!");
-
+//Watson averaging and storing scores variables
 let watsonAvgScr = 0
 let watsonScr = 0
 let total = 0
+let ultimateWatsonObj = new Object()
+let finalWatsonObj
 
-watsonArr = []
-insideObj = new Object()
 
+// user & pass for Watson API
 var username = "764b3285-4014-44f0-a91c-7c99f91abcba"
 var password = "btTEDgvCdpcF"
 
-
-function bitcoinCharts() {
-  $.ajax({
-    url: "http://galvanize-cors-proxy.herokuapp.com/http://api.bitcoincharts.com/v1/trades.csv\?symbol\=localbtcUSD\&start\=1489449600",
-    method: "GET",
-    type: 'json'
-  }).then( response => {
-    console.log(response);
-    console.log(JSON.parse(response));
-    console.log(response.slice(0,9));
-      var date = new Date(response.slice(0,9)* 1000)
-      console.log(date);
-
-  }).catch( error => {
-    console.log(error);
-  })
-
-}
-
-
-
-
+// chart variables
+var myChartPrice
+var myChartWats
+let btcObj = {}
+var btcChart = $("#btc-price-chart");
+var watsChart = $("#wats-score-chart");
 
 function twittFilter(tweet) {
     function blankspace() {
@@ -42,7 +26,7 @@ function twittFilter(tweet) {
         return '%20'
     }
 
-    return tweet.replace(/[h][t][t][p]+[^\s]+/g, blankspace).replace(/[#]+/g, blankspace).replace(/[@]+/g, blankspace).replace(/[&][a][m][p][;]/g,blankspace).replace(/[\s]+/g, percent20)
+    return tweet.replace(/[h][t][t][p]+[^\s]+/g, blankspace).replace(/[#]+/g, blankspace).replace(/[@]+/g, blankspace).replace(/[&][a][m][p][;]/g, blankspace).replace(/[\s]+/g, percent20)
 }
 
 
@@ -51,113 +35,209 @@ function bitBlockRefCheck(text) {
     return /[Bb][i][t][c][o][i]+[^\s]|[Bb][l][o][c][k][c][h][a][i]+[^\s]+/g.test(text)
 }
 
-//O auth for first 200 -- OAuth oauth_consumer_key="DC0sePOBbQ8bYdC8r4Smg",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1489632301",oauth_nonce="3366654022",oauth_version="1.0",oauth_token="841456239800283136-aiCkdGp8kqWhQ4Lg8wcdxxhkXhnF8ta",oauth_signature="DLaEyBrBSvfFyN1DF0bCCNfbW3I%3D"
+function setHeader(xhr) {
+    xhr.setRequestHeader('authorization', 'OAuth oauth_consumer_key="DC0sePOBbQ8bYdC8r4Smg",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1489633016",oauth_nonce="1581578900",oauth_version="1.0",oauth_token="841456239800283136-aiCkdGp8kqWhQ4Lg8wcdxxhkXhnF8ta",oauth_signature="4O8Hl5F9r9525xAPQ4mjn9XDJEQ%3D"');
+}
 
-//https://api.twitter.com/1.1/statuses/home_timeline.json?count=200
+// initiate twitter GET Request
+
+$.ajax({
+    url: "http://galvanize-cors-proxy.herokuapp.com/https://api.twitter.com/1.1/statuses/home_timeline.json?count=200&max_id=842163261403471900",
+    method: "GET",
+    beforeSend: setHeader,
+    connection: "Keep-Alive"
+}).then(response => {
+    // console.log('number of tweets pulled from Tweeter : ', response.length);
+
+    // 1. Filter through response for tweets you want
+    response = response.filter(function(element, index, array) {
+
+        if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][0].slice(0, 10)) {
+            return bitBlockRefCheck(element['text'])
+        } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][1].slice(0, 10)) {
+            return bitBlockRefCheck(element['text'])
+        } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][2].slice(0, 10)) {
+            return bitBlockRefCheck(element['text'])
+        } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][3].slice(0, 10)) {
+            return bitBlockRefCheck(element['text'])
+        }
+    })
 
 
 
-
-//O auth for first ID pull -- OAuth oauth_consumer_key="DC0sePOBbQ8bYdC8r4Smg",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1489632458",oauth_nonce="-478047131",oauth_version="1.0",oauth_token="841456239800283136-aiCkdGp8kqWhQ4Lg8wcdxxhkXhnF8ta",oauth_signature="9lDn%2B5qtUWlT4Ks4931MbFrQqtk%3D"
-
-//https://api.twitter.com/1.1/statuses/home_timeline.json?count=200&max_id=125304737
+    // console.log('response from filter', response);
+    // console.log('response1 length', response.length);
 
 
-function twitterSearch() {
-    console.log('time is now', Math.round(Date.now() / 1000));
     function setHeader(xhr) {
-        xhr.setRequestHeader('authorization', 'OAuth oauth_consumer_key="DC0sePOBbQ8bYdC8r4Smg",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1489633016",oauth_nonce="1581578900",oauth_version="1.0",oauth_token="841456239800283136-aiCkdGp8kqWhQ4Lg8wcdxxhkXhnF8ta",oauth_signature="4O8Hl5F9r9525xAPQ4mjn9XDJEQ%3D"');
+        xhr.setRequestHeader('authorization', 'OAuth oauth_consumer_key="DC0sePOBbQ8bYdC8r4Smg",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1489696891",oauth_nonce="2096730746",oauth_version="1.0",oauth_token="841456239800283136-aiCkdGp8kqWhQ4Lg8wcdxxhkXhnF8ta",oauth_signature="Wajq3chNjGwz0rvA10xZ77Vljzc%3D"');
     }
-
-    var consApiKey = "5s7gJxr2UXDooowpipihK6CMg"
-    var consSecret = "OYFplU9kWtv4DY8DghjCZg2f0ONhqdIVlAlO6x9EtcLxG8q5Kz"
-    let accessToken = "248899102-cMRURi2eVeGyONe5krYO8kUzed95IRQh0NnY2cpZ"
-    let accessTokenSecret = "gudJvOWrwC9rOuESFqoaduCvRo3I2JkclFcnJt5j6kKoR"
 
     // initiate twitter GET Request
 
     $.ajax({
-        url: "http://galvanize-cors-proxy.herokuapp.com/https://api.twitter.com/1.1/statuses/home_timeline.json?count=200&max_id=842163261403471900",
+        url: "http://galvanize-cors-proxy.herokuapp.com/https://api.twitter.com/1.1/statuses/home_timeline.json?count=200&max_id=841378000545415200",
         method: "GET",
         beforeSend: setHeader,
         connection: "Keep-Alive"
-    }).then(response => {
-            console.log(response)
-            console.log('number of tweets pulled from Tweeter : ', response.length);
-            // 1. Filter through response for tweets you want
+    }).then(response2 => {
+        console.log('number of tweets pulled from Tweeter : ', response.length);
 
-          response = response.filter( function(element, index, array) {
+        // 1. Filter through response for tweets you want
+        response2 = response2.filter(function(element, index, array) {
 
-              return bitBlockRefCheck(element['text']) && Number(element['created_at'].slice(8, 10)) === new Date().getDate()
-            },[])
-            // inside of first twitter call.
+            if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][0].slice(0, 10)) {
+                return bitBlockRefCheck(element['text'])
+            } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][1].slice(0, 10)) {
+                return bitBlockRefCheck(element['text'])
+            } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][2].slice(0, 10)) {
+                return bitBlockRefCheck(element['text'])
+            } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][3].slice(0, 10)) {
+                return bitBlockRefCheck(element['text'])
+            }
+        })
+        console.log('response2 length', response2.length);
+        response = response.concat(response2)
 
-
-            var promises = response.map(tweet => {
-                return $.ajax({
-                    url: "http://galvanize-cors-proxy.herokuapp.com/https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=" + twittFilter(tweet['text']) + "&features=sentiment,keywords",
-                    method: "GET",
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
-                    }
-                }).then(function(result) {
-
-                    // append your shit
-                    $(".twitt-scroller").append('<div class="tweet-box col-xs-12">' +
-                        '<div class="col-xs-10 turn-off-padding">' + '<div class="tweet-txt">' + '<img class="thumbnail img-float-text-wrap" src=' + tweet['user']['profile_image_url'] + '>' + tweet['text'] + '</div>' + '</div>' + '<div class="col-xs-2 turn-off-padding">' + '<p>' + result['sentiment']['document']['label'] + '</p>' + '<p>' + result["sentiment"]["document"]["score"] + '</p>' + '</div>' + '</div>')
-
-                    // return result.sentiment.document.score
-                    watsonScore = result["sentiment"]["document"]["score"]
-                    console.log(tweet['created_at']);
-                    watsonArr.push(insideObj.date = tweet['created_at'])
-                    console.log('returning watson object', watsonArr);
-                    return watsonScore
-                }).catch(error => {
-
-                })
-            })
-
-            // 3. Promise.all and average the result
-
-            Promise.all(promises).then(result => {
-              console.log('result of watson request', result);
-                // result --> [ array of Watson scores]
-                total = result.reduce( function (acc, val) {
-                  return acc + val;
-                }, 0)
-
-                console.log('number of tweets sent to Watson : ', result.length);
-                watsonAvgScr = (total / result.length).toFixed(2);
-
-                function watsAvgPosOrNeg(score) {
-                  console.log(score.slice(0,1));
-                  if(score.slice(0,1) === '-') {
-                    return '-'
-                  }else {
-                    return ''
-                  }
+        var promises = response.map(tweet => {
+            return $.ajax({
+                url: "http://galvanize-cors-proxy.herokuapp.com/https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=" + twittFilter(tweet['text']) + "&features=sentiment,keywords",
+                method: "GET",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
                 }
+            }).then(function(result) {
+                // console.log('result from watson', result);
+                // append your shit
+                $(".twitt-scroller").append('<div class="tweet-box col-xs-12">' +
+                    '<div class="col-xs-10 turn-off-padding">' + '<div class="tweet-txt">' + '<img class="thumbnail img-float-text-wrap" src=' + tweet['user']['profile_image_url'] + '>' + tweet['text'] + '</div>' + '</div>' + '<div class="col-xs-2 turn-off-padding">' + '<p>' + result['sentiment']['document']['label'] + '</p>' + '<p>' + result["sentiment"]["document"]["score"] + '</p>' + '</div>' + '</div>')
 
-                let watsAvgInPercent = watsAvgPosOrNeg(watsonAvgScr) + watsonAvgScr.slice(watsonAvgScr.length-2, watsonAvgScr.length) + '%';
 
-                watsonArr.push(insideObj.percent = watsAvgInPercent)
-                console.log('watsAvgInPercent',watsAvgInPercent);
+                watsonScore = result["sentiment"]["document"]["score"]
 
-                $("#watson-percent-total").html(watsAvgInPercent)
+                ultimateWatsonObj = {
+                    tweetdate: tweet['created_at'].slice(0, 10),
+                    score: watsonScore
+                }
+                console.log("about to return");
+                return ultimateWatsonObj
+            }).catch(error => {
 
-          // else {
-          //   console.log('this tweet did not pass the test   :    ', tweet['text']);
-          // }
-        }).catch( error => {
-          console.log('this caused an error yo!', error);
+            })
+        })
+
+        // 3. Promise.all and average the result
+
+        Promise.all(promises).then(result => {
+            console.log('number of tweets sent to Watson : ', result.length);
+            window.wesThing = result
+
+            console.log('result of ultWatsonResponse request', result);
+
+            // result --> [ array of {Watson objects}]
+
+            result = result.reduce(function(acc, tweet) {
+                if (acc[tweet.tweetdate]) {
+                    acc[tweet.tweetdate].push(tweet.score)
+                } else {
+                    acc[tweet.tweetdate] = [tweet.score]
+                }
+                return acc
+            }, {})
+
+            for (let i in result) {
+                for (let arritem = 0; arritem < result[i].length; arritem++) {
+                    total += result[i][arritem]
+                }
+                result[i] = total / result[i].length
+                result[i] = result[i].toFixed(2)
+            }
+            finalWatsonObj = result
+            console.log(finalWatsonObj);
+            for (let i = 0; i < myChartWats['data']['labels'].length; i++) {
+              console.log(finalWatsonObj[myChartWats['data']['labels'][i]])
+                myChartWats.data.datasets[0].data.push(finalWatsonObj[myChartWats['data']['labels'][i]])
+            }
+
+
 
         })
-    }).catch( error => {
-      console.log('this caused an error yo!. IM FUCKED',error);
+    }).catch(error => {
+        console.log('this caused a Watson error yo!', error);
 
     })
-    }
+}).catch(error => {
+    console.log('this caused an error for response 2yo!.', error);
 
-    twitterSearch()
-    console.log(watsonArr);
-    // bitcoinCharts()
+})
+
+$.ajax({
+    url: "http://galvanize-cors-proxy.herokuapp.com/https://api.blockchain.info/charts/market-price?timespan=1weeks&format=json",
+    method: "GET",
+    type: 'json'
+}).then(response => {
+    let date
+    response['values'].forEach(function(object) {
+        date = new Date(object['x'] * 1000)
+        date = date.toString().slice(0, 10);
+        btcObj[date] = object['y'].toFixed(2)
+    })
+    for (let i = 0; i < myChartPrice['data']['labels'].length; i++) {
+        myChartPrice.data.datasets[0].data.push(btcObj[myChartPrice['data']['labels'][i].slice(0, 10)])
+    }
+}).catch(error => {
+    console.log(error);
+})
+
+
+
+myChartPrice = new Chart(btcChart, {
+    type: 'line',
+    data: {
+        labels: ["Sat Mar 11", "Sun Mar 12", "Mon Mar 13", "Tue Mar 14"],
+        datasets: [{
+            label: 'BTC Price',
+            data: [],
+            fill: false,
+            borderColor: ['rgba(255,99,132,1)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+myChartWats = new Chart(watsChart, {
+    type: 'line',
+    data: {
+        labels: ["Sat Mar 11", "Sun Mar 12", "Mon Mar 13", "Tue Mar 14"],
+        datasets: [{
+                label: 'Neutral Sentiment',
+                data: [],
+                fill: false,
+                borderColor: ['rgba(255,99,132,1)'],
+                borderWidth: 1
+            }
+        ]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+
+
+console.log(myChartWats.data.datasets[0].data);

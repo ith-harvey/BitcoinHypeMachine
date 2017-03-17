@@ -12,6 +12,8 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>
     <link rel="stylesheet" href="hypeMachine.css">
 
 </head>
@@ -55,21 +57,12 @@
             </div>
         </div>
         <div class="graph col-xs-8">
-            <div class="btcwdgt-chart" bw-theme="light"></div>
+            <!-- <div class="btcwdgt-chart" bw-theme="light"></div> -->
+            <canvas id="btc-price-chart" width="400" height="400"></canvas>
+            <canvas id="wats-score-chart" width="400" height="400"></canvas>
         </div>
     </div>
     </div>
-    <script>
-        (function(b, i, t, C, O, I, N) {
-            window.addEventListener('load', function() {
-                if (b.getElementById(C)) return;
-                I = b.createElement(i), N = b.getElementsByTagName(i)[0];
-                I.src = t;
-                I.id = C;
-                N.parentNode.insertBefore(I, N);
-            }, false)
-        })(document, 'script', 'https://widgets.bitcoin.com/widget.js', 'btcwdgt');
-    </script>
     <script src="hypeMachine.js" type="text/javascript"></script>
 </body>
 
