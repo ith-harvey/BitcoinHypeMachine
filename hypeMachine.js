@@ -17,6 +17,7 @@ var myChartWats
 let btcObj = {}
 var btcChart = $("#btc-price-chart");
 var watsChart = $("#wats-score-chart");
+let dayLabels = ["Sat Mar 11", "Sun Mar 12", "Mon Mar 13", "Tue Mar 14"]
 
 function twittFilter(tweet) {
     function blankspace() {
@@ -53,13 +54,13 @@ $.ajax({
     // 1. Filter through response for tweets you want
     response = response.filter(function(element, index, array) {
 
-        if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][0].slice(0, 10)) {
+        if (element['created_at'].slice(0, 10) === dayLabels[0]) {
             return bitBlockRefCheck(element['text'])
-        } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][1].slice(0, 10)) {
+        } else if (element['created_at'].slice(0, 10) === dayLabels[1]) {
             return bitBlockRefCheck(element['text'])
-        } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][2].slice(0, 10)) {
+        } else if (element['created_at'].slice(0, 10) === dayLabels[2]) {
             return bitBlockRefCheck(element['text'])
-        } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][3].slice(0, 10)) {
+        } else if (element['created_at'].slice(0, 10) === dayLabels[3]) {
             return bitBlockRefCheck(element['text'])
         }
     })
@@ -82,13 +83,13 @@ $.ajax({
         // 1. Filter through response for tweets you want
         response2 = response2.filter(function(element, index, array) {
 
-            if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][0].slice(0, 10)) {
+            if (element['created_at'].slice(0, 10) === dayLabels[0]) {
                 return bitBlockRefCheck(element['text'])
-            } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][1].slice(0, 10)) {
+            } else if (element['created_at'].slice(0, 10) === dayLabels[1]) {
                 return bitBlockRefCheck(element['text'])
-            } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][2].slice(0, 10)) {
+            } else if (element['created_at'].slice(0, 10) === dayLabels[2]) {
                 return bitBlockRefCheck(element['text'])
-            } else if (element['created_at'].slice(0, 10) === myChartPrice['data']['labels'][3].slice(0, 10)) {
+            } else if (element['created_at'].slice(0, 10) === dayLabels[3]) {
                 return bitBlockRefCheck(element['text'])
             }
         })
@@ -137,6 +138,7 @@ $.ajax({
         // 3. Promise.all and average the result
 
         Promise.all(promises).then(result => {
+          let watsonData = []
             console.log('number of tweets sent to Watson : ', result.length);
             window.wesThing = result
 
@@ -161,12 +163,37 @@ $.ajax({
                 result[i] = result[i].toFixed(2)
             }
             finalWatsonObj = result
-            console.log(finalWatsonObj);
-            for (let i = 0; i < myChartWats['data']['labels'].length; i++) {
-                console.log(finalWatsonObj[myChartWats['data']['labels'][i]])
-                myChartWats.data.datasets[0].data.push(finalWatsonObj[myChartWats['data']['labels'][i]])
+
+            for (let i = 0; i < dayLabels.length; i++) {
+                watsonData.push(finalWatsonObj[dayLabels[i]])
             }
 
+            new Chart(watsChart, {
+                type: 'line',
+                data: {
+                    labels: dayLabels,
+                    datasets: [{
+                        label: 'Neutral Sentiment',
+                        data: watsonData,
+                        fill: false,
+                        borderColor: ['rgba(255,99,132,1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                          scaleLabel: {
+                              display: true,
+                              labelString: 'Sentiment',
+                            ticks: {
+                                beginAtZero: true
+                            }
+                          }
+                        }]
+                    }
+                }
+            });
 
 
         })
@@ -184,71 +211,44 @@ $.ajax({
     method: "GET",
     type: 'json'
 }).then(response => {
+    let btcData = []
     let date
     response['values'].forEach(function(object) {
         date = new Date(object['x'] * 1000)
         date = date.toString().slice(0, 10);
         btcObj[date] = object['y'].toFixed(2)
     })
-    for (let i = 0; i < myChartPrice['data']['labels'].length; i++) {
-        myChartPrice.data.datasets[0].data.push(btcObj[myChartPrice['data']['labels'][i].slice(0, 10)])
+    for (let i = 0; i < dayLabels.length; i++) {
+        btcData.push(btcObj[dayLabels[i]])
     }
+
+    new Chart(btcChart, {
+        type: 'line',
+        data: {
+            labels: dayLabels,
+            datasets: [{
+                label: 'BTC Price',
+                data: btcData,
+                fill: false,
+                borderColor: ['rgba(255,99,132,1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'US Dollars'
+                    },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
 }).catch(error => {
     console.log(error);
 })
-
-
-
-myChartPrice = new Chart(btcChart, {
-    type: 'line',
-    data: {
-        labels: ["Sat Mar 11", "Sun Mar 12", "Mon Mar 13", "Tue Mar 14"],
-        datasets: [{
-            label: 'BTC Price',
-            data: [],
-            fill: false,
-            borderColor: ['rgba(255,99,132,1)'],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'US Dollars'
-                },
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-
-myChartWats = new Chart(watsChart, {
-    type: 'line',
-    data: {
-        labels: ["Sat Mar 11", "Sun Mar 12", "Mon Mar 13", "Tue Mar 14"],
-        datasets: [{
-            label: 'Neutral Sentiment',
-            data: [],
-            fill: false,
-            borderColor: ['rgba(255,99,132,1)'],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-              scaleLabel: {
-                  display: true,
-                  labelString: 'Sentiment',
-                ticks: {
-                    beginAtZero: true
-                }
-              }
-            }]
-        }
-    }
-});
