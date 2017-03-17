@@ -33,9 +33,11 @@
                 </ul>
             </div>
             <div class="col-xs-6 heading-descriptor-text">
-                <img src="images/IBM_Watson_avatar_pos-2-1000x986.png" alt="Watson logo">
-                <img src="images/opengraph.png" alt="btc logo">
-                <img src="images/Twitter-PNG-HD-1.png" alt="Twitter logo">
+                <div class="row">
+                    <img class="col-xs-4 col-centered" src="images/IBM_Watson_avatar_pos-2-1000x986.png" alt="Watson logo">
+                    <img class="col-xs-4 col-centered" src="images/opengraph.png" alt="btc logo">
+                    <img class="col-xs-4 col-centered" src="images/Twitter-PNG-HD-1.png" alt="Twitter logo">
+                </div>
                 <p>An API agrigator that filters tweets from influential bitcoin accounts through IBM's Watson AI using sentiment analysis.
                 </p>
             </div>
@@ -44,21 +46,36 @@
     <div class="col-xs-12 main-disp-contain">
         <div class="col-xs-4">
             <div class="watson-total col-xs-12">
-                <h2 class="col-xs-12 turn-off-padding">Hype Machine Breakdown</h2>
-                <div class="col-xs-6">
-                    <h4 class="mini-heading"># of Tweets Pulled</h4>
+                <h4 class="col-xs-12 col-centered">Hype Machine Breakdown</h4>
+                <div class="col-xs-6 turn-off-padding">
+                    <h5 class="mini-heading">Tweets Pulled</h5>
+                </div>
+                <div class="col-xs-6 turn-off-padding">
+                    <h5 class="mini-heading">Tweets Filtered</h5>
                 </div>
                 <div class="col-xs-6">
-                    <h4 class="mini-heading"># of Tweets Filtered</h4>
+                    <p id="total-tweets-pulled" class="turn-off-padding"></p>
                 </div>
                 <div class="col-xs-6">
-                    <h4 id="total-tweets-pulled" class="turn-off-padding"></h4>
-                </div>
-                <div class="col-xs-6">
-                    <h4 id="total-tweets-filtered" class="turn-off-padding"></h4>
+                    <p id="total-tweets-filtered" class="turn-off-padding"></p>
                 </div>
             </div>
             <div class="twitt-scroller pre-scrollable col-xs-12">
+                <div class="tweet-loading-graphic col-xs-12">
+                    <div class="tweet-loading-graphic row">
+                        <img class="col-xs-4 col-xs-offset-5" src="images/Twitter-PNG-HD-1.png" alt="Twitter logo">
+                    </div>
+                    <div class="tweet-loading-graphic row">
+                        <div class="col-xs-4 col-xs-offset-4">
+                            <div id="loader-circle" class="tweet-loading-graphic"></div>
+                        </div>
+                    </div>
+                    <div class="tweet-loading-graphic row">
+                        <div class="col-xs-11 col-xs-offset-1">
+                            <q>If you build it, Tweets will come...</q>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="graph col-xs-8">

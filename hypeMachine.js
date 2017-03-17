@@ -108,14 +108,14 @@ $.ajax({
                     xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
                 }
             }).then(function(result) {
-                // console.log('result from watson', result);
+
                 // append your shit
 
-                $(".twitt-scroller").append('<div class="tweet-box col-xs-12">' +
-                    '<div class="col-xs-7 turn-off-padding">' + '<img class="col-xs-2 thumbnail img-float-text-wrap" src=' + tweet['user']['profile_image_url'] + '>'+ '<h6 class=" username col-xs-8">' + tweet['user']['name'] +'</h6>' + '</div>' + '<div class="col-xs-5 turn-off-padding">' + '<p>' + result['sentiment']['document']['label'] + '</p>' + '<p>' + result["sentiment"]["document"]["score"] + '</p>' + '</div>' + '<div class="tweet-txt col-xs-12">' + tweet['text'] + '</div>')
+                let html = '<div class="tweet-box ' + result['sentiment']['document']['label'] + ' col-xs-12">' +
+                    '<div class="col-xs-7 turn-off-padding">' + '<img class="col-xs-2 thumbnail img-float-text-wrap" src=' + tweet['user']['profile_image_url'] + '>'+ '<h6 class=" username turn-off-padding col-xs-8">' + tweet['user']['name'] +'</h6>' + '</div>' + '<div class="col-xs-5 turn-off-padding score-bubble">' + '<div class="inside-score-bub">'+'<p>' + result['sentiment']['document']['label'] + '</p>' + '<p>' + result["sentiment"]["document"]["score"].toFixed(2) + '</p>' + '</div>' + '</div>' + '<div class="tweet-txt col-xs-12">' + tweet['text'] + '</div>'
 
-
-
+                $(".tweet-loading-graphic").slideUp(800)
+                $(html).hide().appendTo(".twitt-scroller").fadeIn(1000)
 
                 watsonScore = result["sentiment"]["document"]["score"]
 
@@ -173,13 +173,29 @@ $.ajax({
                 data: {
                     labels: dayLabels,
                     datasets: [{
-                        label: 'Neutral Sentiment',
+                        label: 'Running Sentiment',
                         data: watsonData,
                         fill: false,
+                        borderColor: ['rgba(0,106,226,1)'],
+                        borderWidth: 1 },
+
+                        { label: 'Positive',
+                        data: [1,1,1,1],
+                        fill: false,
+                        borderColor: ['rgba(0,106,226,1)'],
+                        borderWidth: 1 },
+                        { label: 'Neutral',
+                        data: [0,0,0,0],
+                        fill: false,
+                        borderColor: ['rgb(211,211,211)'],
+                        borderWidth: 1 },
+                        { label: 'Negative',
+                        data: [-1,-1,-1,-1],
+                        fill: false,
                         borderColor: ['rgba(255,99,132,1)'],
-                        borderWidth: 1
-                    }]
-                },
+                        borderWidth: 1 }
+                      ]
+                    },
                 options: {
                     scales: {
                         yAxes: [{
