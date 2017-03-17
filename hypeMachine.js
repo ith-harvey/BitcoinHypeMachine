@@ -111,7 +111,7 @@ $.ajax({
                 // append your shit
 
                 $(".twitt-scroller").append('<div class="tweet-box col-xs-12">' +
-                    '<div class="col-xs-10 turn-off-padding">' + '<img class="col-xs-2 thumbnail img-float-text-wrap" src=' + tweet['user']['profile_image_url'] + '>'+ '<h6 class=" username col-xs-8">' + tweet['user']['name'] +'</h6>' + '</div>' + '<div class="col-xs-2 turn-off-padding">' + '<p>' + result['sentiment']['document']['label'] + '</p>' + '<p>' + result["sentiment"]["document"]["score"] + '</p>' + '</div>' + '<div class="tweet-txt col-xs-12">' + tweet['text'] + '</div>')
+                    '<div class="col-xs-7 turn-off-padding">' + '<img class="col-xs-2 thumbnail img-float-text-wrap" src=' + tweet['user']['profile_image_url'] + '>'+ '<h6 class=" username col-xs-8">' + tweet['user']['name'] +'</h6>' + '</div>' + '<div class="col-xs-5 turn-off-padding">' + '<p>' + result['sentiment']['document']['label'] + '</p>' + '<p>' + result["sentiment"]["document"]["score"] + '</p>' + '</div>' + '<div class="tweet-txt col-xs-12">' + tweet['text'] + '</div>')
 
 
 
@@ -180,7 +180,7 @@ $.ajax({
 })
 
 $.ajax({
-    url: "http://galvanize-cors-proxy.herokuapp.com/https://api.blockchain.info/charts/market-price?timespan=1weeks&format=json",
+    url: "https://galvanize-cors-proxy.herokuapp.com/https://api.blockchain.info/charts/market-price?timespan=1weeks&format=json",
     method: "GET",
     type: 'json'
 }).then(response => {
@@ -252,7 +252,3 @@ myChartWats = new Chart(watsChart, {
         }
     }
 });
-
-
-
-console.log(myChartWats.data.datasets[0].data);

@@ -45,7 +45,7 @@ html {
 
 .twitt-scroller {
   overflow-y: scroll;
-  height: 21rem;
+  height: 30rem;
   margin-bottom: 5rem;
 }
 
@@ -68,6 +68,7 @@ html {
 .tweet-box {
   padding: .3rem .2rem .3rem .2rem;
   border-radius: 10px;
+  margin-bottom: .4rem;
 }
 
 #total-tweets-pulled {
