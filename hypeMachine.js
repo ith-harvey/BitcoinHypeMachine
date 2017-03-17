@@ -42,7 +42,7 @@ function setHeader(xhr) {
 // initiate twitter GET Request
 
 $.ajax({
-    url: "http://galvanize-cors-proxy.herokuapp.com/https://api.twitter.com/1.1/statuses/home_timeline.json?count=200&max_id=842163261403471900",
+    url: "https://galvanize-cors-proxy.herokuapp.com/https://api.twitter.com/1.1/statuses/home_timeline.json?count=200&max_id=842163261403471900",
     method: "GET",
     beforeSend: setHeader,
     connection: "Keep-Alive"
@@ -64,11 +64,6 @@ $.ajax({
     })
 
 
-
-    // console.log('response from filter', response);
-    // console.log('response1 length', response.length);
-
-
     function setHeader(xhr) {
         xhr.setRequestHeader('authorization', 'OAuth oauth_consumer_key="DC0sePOBbQ8bYdC8r4Smg",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1489696891",oauth_nonce="2096730746",oauth_version="1.0",oauth_token="841456239800283136-aiCkdGp8kqWhQ4Lg8wcdxxhkXhnF8ta",oauth_signature="Wajq3chNjGwz0rvA10xZ77Vljzc%3D"');
     }
@@ -76,7 +71,7 @@ $.ajax({
     // initiate twitter GET Request
 
     $.ajax({
-        url: "http://galvanize-cors-proxy.herokuapp.com/https://api.twitter.com/1.1/statuses/home_timeline.json?count=200&max_id=841378000545415200",
+        url: "https://galvanize-cors-proxy.herokuapp.com/https://api.twitter.com/1.1/statuses/home_timeline.json?count=200&max_id=841378000545415200",
         method: "GET",
         beforeSend: setHeader,
         connection: "Keep-Alive"
@@ -101,7 +96,7 @@ $.ajax({
 
         var promises = response.map(tweet => {
             return $.ajax({
-                url: "http://galvanize-cors-proxy.herokuapp.com/https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=" + twittFilter(tweet['text']) + "&features=sentiment,keywords",
+                url: "https://galvanize-cors-proxy.herokuapp.com/https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=" + twittFilter(tweet['text']) + "&features=sentiment,keywords",
                 method: "GET",
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
@@ -155,7 +150,7 @@ $.ajax({
             finalWatsonObj = result
             console.log(finalWatsonObj);
             for (let i = 0; i < myChartWats['data']['labels'].length; i++) {
-              console.log(finalWatsonObj[myChartWats['data']['labels'][i]])
+                console.log(finalWatsonObj[myChartWats['data']['labels'][i]])
                 myChartWats.data.datasets[0].data.push(finalWatsonObj[myChartWats['data']['labels'][i]])
             }
 
@@ -206,6 +201,10 @@ myChartPrice = new Chart(btcChart, {
     options: {
         scales: {
             yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'US Dollars'
+                },
                 ticks: {
                     beginAtZero: true
                 }
@@ -219,13 +218,12 @@ myChartWats = new Chart(watsChart, {
     data: {
         labels: ["Sat Mar 11", "Sun Mar 12", "Mon Mar 13", "Tue Mar 14"],
         datasets: [{
-                label: 'Neutral Sentiment',
-                data: [],
-                fill: false,
-                borderColor: ['rgba(255,99,132,1)'],
-                borderWidth: 1
-            }
-        ]
+            label: 'Neutral Sentiment',
+            data: [],
+            fill: false,
+            borderColor: ['rgba(255,99,132,1)'],
+            borderWidth: 1
+        }]
     },
     options: {
         scales: {
