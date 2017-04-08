@@ -1,0 +1,30 @@
+{
+  "name": "q1project",
+  "version": "1.0.0",
+  "description": "Wire Frame:",
+  "main": "hypeMachine.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "./node_modules/.bin/nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/needMoreJava/BitcoinHypeMachine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/needMoreJava/BitcoinHypeMachine/issues"
+  },
+  "homepage": "https://github.com/needMoreJava/BitcoinHypeMachine#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "passport": "^0.3.2",
+    "passport-twitter": "^1.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
