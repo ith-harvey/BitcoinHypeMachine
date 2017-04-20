@@ -19,6 +19,8 @@ var btcChart = $("#btc-price-chart");
 var watsChart = $("#wats-score-chart");
 let dayLabels = ["Sat Mar 11", "Sun Mar 12", "Mon Mar 13", "Tue Mar 14"]
 
+
+
 function twittFilter(tweet) {
     function blankspace() {
         return ''
@@ -267,4 +269,5 @@ $.ajax({
 
 }).catch(error => {
     console.log(error);
+})
 })

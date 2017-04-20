@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "./node_modules/.bin/nodemon server.js"
+    "dev": "./node_modules/.bin/nodemon server.js",
+    "knex": "knex"
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,11 @@
   "homepage": "https://github.com/needMoreJava/BitcoinHypeMachine#readme",
   "dependencies": {
     "express": "^4.15.2",
-    "passport": "^0.3.2",
-    "passport-twitter": "^1.0.4"
+    "hbs": "^4.0.1",
+    "knex": "^0.12.9",
+    "node-twitter-api": "^1.8.0",
+    "pg": "^6.1.5",
+    "request": "^2.81.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
