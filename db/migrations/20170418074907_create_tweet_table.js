@@ -2,13 +2,13 @@
 exports.up = function(knex) {
   return knex.schema.createTable('tweets', function(table) {
     table.increments()
-    table.date('date')
-    table.string('author')
-    table.string('tweet_pull_id')
-    table.string('tweet_text')
-    table.integer('watson_score')
-    table.string('watson_label')
-    table.string('profile_img')
+    table.date('date').notNullable()
+    table.string('author').notNullable()
+    table.string('tweet_pull_id').notNullable()
+    table.string('tweet_text').notNullable()
+    table.string('watson_score').notNullable()
+    table.string('watson_label').notNullable()
+    table.string('profile_img').notNullable()
     table.timestamps(true, true)
   });
 }

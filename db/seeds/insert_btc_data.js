@@ -7,17 +7,17 @@ exports.seed = function(knex, Promise) {
       return knex('btc_prices').insert([
         {
           id: 1,
-          date: 'Tuesday 11th April 2017 12:00:00 AM',
+          date: 'Tue Jun 13 07:31:53 +0000 2017',
           price: '1226.6170375'
         },
         {
           id: 2,
-          date: 'Wednesday 12th April 2017 12:00:00 AM',
+          date: 'Mon Jun 12 07:31:53 +0000 2017',
           price: '1220.1239874'
         },
         {
           id: 3,
-          date: 'Thursday 13th April 2017 12:00:00 AM',
+          date: 'Wed Jun 14 07:31:53 +0000 2017',
           price: '1180.0237125'
         }
       ]);

@@ -2,8 +2,8 @@
 exports.up = function(knex) {
   return knex.schema.createTable('btc_prices', function(table) {
     table.increments()
-    table.date('date')
-    table.integer('price')
+    table.date('date').notNullable()
+    table.string('price').notNullable()
     table.timestamps(true, true)
   });
 }
