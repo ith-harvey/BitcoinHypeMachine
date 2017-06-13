@@ -9,6 +9,8 @@ const hbs = require('hbs')
 const request = require('request')
 const dotenv = require('dotenv').config()
 const filterFunc = require('./filterFunc.js')
+const rp = require('request-promise');
+
 const moment = require('moment');
 
 const index = require('./routes/index.js')
@@ -19,130 +21,151 @@ console.log('this is yesterday = ', yesterday);
 var accessToken = process.env.ACCESS_TOKEN
 var accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
 
+var watsonAuth = new Buffer(process.env.WATSON_USERNAME + ':' + process.env.WATSON_PASSWORD).toString('base64');
+
 var allTweets
 var rqToken
 var rqTokenSecret
 var tweetData
+let numOfTweetsFiltered = 0
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 app.use('/', index)
 
-function twittPull() {
 
-  var twitter = new twitterAPI({
-    consumerKey: process.env.TWITTER_CONSUMER_KEY,
-    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callback: process.env.TWITTER_CONSUMER_CALLBACK
-  });
 
-  twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results) {
-    if (error) {
-      console.log("Error getting OAuth request token : " + error);
-    } else {
-      rqToken = requestToken
-      rqTokenSecret = requestTokenSecret
-    }
-  });
 
-  // FIRST request to Twitter
-  twitter.getTimeline("home", {
-      count: 200
-    },
+var twitter = new twitterAPI({
+  consumerKey: process.env.TWITTER_CONSUMER_KEY,
+  consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+  callback: process.env.TWITTER_CONSUMER_CALLBACK
+});
+
+twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results) {
+  if (error) {
+    console.log("Error getting OAuth request token : " + error);
+  } else {
+    rqToken = requestToken
+    rqTokenSecret = requestTokenSecret
+  }
+});
+
+
+
+
+let fireAllTweetRequests = new Promise(function firstTweetRequest(resolve, reject) {
+
+    // FIRST request to Twitter
+  return twitter.getTimeline("home",
+    {count: 200},
     accessToken,
     accessTokenSecret,
     function (error, firstSetTweets, response) {
       if (error) {
         console.log('this is the first request',error);
+        return reject(error)
       } else {
         console.log('total number of tweets from first pull', firstSetTweets.length);
 
-        var numOfTweetsFiltered = 0
-
         var idOfLastTweet = firstSetTweets[firstSetTweets.length - 1].id
-        console.error('last id of array', idOfLastTweet);
+
+        return resolve(firstSetTweets, idOfLastTweet)
+      }
+    }
+  )
+})
 
 
+fireAllTweetRequests.then(function secondTweetRequest(firstSetTweets,idOfLastTweet) {
 
-        // SECOND request to twitter
+  console.log('in secondTweetRequest');
 
-        twitter.getTimeline("home",
-          {
-            count: 200,
-            max_id: idOfLastTweet
-          },
-          accessToken,
-          accessTokenSecret,
-          function(error, secondSetTweets, response) {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('secondSetTweets.length', secondSetTweets.length);
+  twitter.getTimeline("home",
+    {count: 200, max_id: idOfLastTweet},
+    accessToken,
+    accessTokenSecret,
+    function(error, secondSetTweets, response) {
+      if (error) {
+        return reject(error)
+        console.log(error);
+      } else {
+        console.log('secondSetTweets.length', secondSetTweets.length);
+        allTweets = firstSetTweets.concat(secondSetTweets)
+        console.log('allTweets.length', allTweets.length);
+                // FILTERING for relevant tweets //
 
-              allTweets = firstSetTweets.concat(secondSetTweets)
-              console.log('allTweets.length', allTweets.length);
+        let onlyRelevantTweets = (tweet) => {
 
-              allTweets.forEach((tweet, index, array) => {
+          let tweetDateDay = moment(tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').date()
+          let relevantTweet = filterFunc.bitBlockRefCheck(tweet.text)
 
-                var tweetDateDay = moment(tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').date()
+          return tweetDateDay === yesterday && relevantTweet
+        }
 
-                if (tweetDateDay === yesterday && filterFunc.bitBlockRefCheck(tweet.text)) {
-                  numOfTweetsFiltered += 1
-                  let tweetPostFilter = filterFunc.filterTweet(tweet.text)
+        let watsonRequest = (tweet) => {
+          let opts = {
+            url: "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=" + tweet + "&features=sentiment,keywords",
+            path: path,
+            method: 'GET',
+            headers: {
+              Authorization: 'Basic ' + watsonAuth,
+              'Content-Type': 'application/json'
+            }
+          }
+          return rp(opts)
+        }
 
-                  var auth = new Buffer(process.env.WATSON_USERNAME + ':' + process.env.WATSON_PASSWORD).toString('base64');
+        let tweetFilter = (tweet) => {
+          let tweetPostFilter = filterFunc.filterTweet(tweet.text)
+          return tweetPostFilter
+        }
 
-                  console.log('this is what is being sent to Watson : ', tweetPostFilter);
-                  console.log(tweet.created_at);
+        let promises = allTweets.filter(onlyRelevantTweets).map(tweetFilter).map(watsonRequest)
 
-                  var req = {
-                    url: "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=" + tweetPostFilter + "&features=sentiment,keywords",
-                    path: path,
-                    method: 'GET',
-                    headers: {
-                      Authorization: 'Basic ' + auth,
-                      'Content-Type': 'application/json'
-                    }
-                  }
+        console.log('what we get back from filter = ', promises);
 
-                  // Initiate Watson API call & trigger callback
-                  // request(req,watsonCallback);
 
-                  function watsonCallback(error, response, body) {
-                    body = JSON.parse(body)
-                    console.log('heres what were getting back post parse',body);
+        //fires all promises to watson!
+        Promise.all(promises).then(result => {
+          console.log(result);
+        })
+      }
+    }
+  )
+})
+            // Initiate Watson API call & trigger callback
+            // request(req,watsonCallback);
 
-                    tweetData = {
-                      tweet_pull_id: tweet.id,
-                      date: moment(tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en'),
-                      author: tweet.user.name,
-                      tweet_text: tweet.text,
-                      watson_score: body.sentiment.document.score,
-                      watson_label: body.sentiment.document.label,
-                      profile_img: tweet.user.profile_image_url
-                    }
+            function watsonCallback(error, response, body) {
+              body = JSON.parse(body)
+              console.log('heres what were getting back post parse',body);
 
-                    console.log('heres what we are inserting ',tweetData);
+              tweetData = {
+                tweet_pull_id: tweet.id,
+                date: moment(tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en'),
+                author: tweet.user.name,
+                tweet_text: tweet.text,
+                watson_score: body.sentiment.document.score,
+                watson_label: body.sentiment.document.label,
+                profile_img: tweet.user.profile_image_url
+              }
 
-                    db('tweets').insert(tweetData).then(() => {
-                      console.log('db injection was succesfull', numOfTweetsFiltered);
-                    }).catch(error => {
-                      console.log(error);
-                    })
-                  }
-                }
+              console.log('heres what we are inserting ',tweetData);
+
+              db('tweets').insert(tweetData).then(() => {
+                console.log('db injection was succesfull', numOfTweetsFiltered);
+              }).catch(error => {
+                console.log(error);
               })
             }
-          })
-      }
-    })
-  }
+
 
   app.use((err, req, res, next) => {
     res.send(err).status(err.status)
   })
 
-  twittPull()
+  fireAllTweetRequests
 
   app.listen(port, () => {
     console.log(`server running on port ${port}`);
