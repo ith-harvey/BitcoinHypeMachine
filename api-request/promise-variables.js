@@ -1,5 +1,5 @@
 const watsonAuth = new Buffer(process.env.WATSON_USERNAME + ':' + process.env.WATSON_PASSWORD).toString('base64');
-const db = require('./db')
+const db = require('../db')
 const moment = require('moment');
 const yesterday = moment().subtract(1, 'day').date()
 const request = require('request')
@@ -37,7 +37,8 @@ let watsonRequest = (tweet) => {
     }
   }
 
-  request(opts, watsonCallback);
+  setInterval(request(opts, watsonCallback), 500)
+
 
   function watsonCallback(error, response, body) {
     body = JSON.parse(body)
