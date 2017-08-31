@@ -64,7 +64,7 @@ fireTweetRequest.then( (firstSetTweets,idOfLastTweet) => {
 
 
   Promise.all(promises).then(result => {
-    console.log('DB injection has finnished' );
+    console.log('promise chain has finnished',result.length );
   })
 })
 

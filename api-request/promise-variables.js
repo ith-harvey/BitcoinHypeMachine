@@ -5,6 +5,8 @@ const yesterday = moment().subtract(1, 'day').date()
 const request = require('request')
 const path = require('path')
 
+var counter = 0
+
 const filterFunc = require('./filterFunc.js')
 
 // ensures tweet was created yesterday
@@ -37,12 +39,23 @@ let watsonRequest = (tweet) => {
     }
   }
 
-  setInterval(request(opts, watsonCallback), 500)
+setTimeout(tester(tweet.watson_text), 1000)
+
+  function tester(watson_text) {
+    console.log('thing happening', watson_text);
+    console.log('//// COUNTER', counter);
+    counter++
+    return
+    }
+
+
+
+  // request(opts, watsonCallback)
 
 
   function watsonCallback(error, response, body) {
     body = JSON.parse(body)
-    console.log('heres what were getting back post parse',body);
+    console.log('heres what were getting back post parse', body);
 
 
     console.log('tweet_pull_id:',tweet.id);
