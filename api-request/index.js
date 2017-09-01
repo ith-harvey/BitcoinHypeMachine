@@ -58,13 +58,24 @@ let fireTweetRequest = new Promise( (resolve, reject) => {
   // send tweets to get assessed by Watson
   // store post everything 'tweetData' obj into DB
 
+
 fireTweetRequest.then( (firstSetTweets,idOfLastTweet) => {
 
-  let promises = firstSetTweets.filter(promiseVariables.onlyRelevantTweets).map(promiseVariables.tweetFilter).map(promiseVariables.watsonRequest)
+  let promises = firstSetTweets.filter(promiseVariables.onlyRelevantTweets).map(promiseVariables.tweetFilter)
 
+  let counter = 0
 
   Promise.all(promises).then(result => {
-    console.log('promise chain has finnished',result.length );
+    console.log('promise chain has finnished',result.length);
+
+    let timer = setInterval( ( ) => {
+        promiseVariables.watsonRequest(result[counter])
+        counter++
+        if (counter === result.length) {
+          clearInterval(timer)
+        }
+      }, 1000)
+
   })
 })
 

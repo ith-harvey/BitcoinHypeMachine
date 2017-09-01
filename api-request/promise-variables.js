@@ -28,7 +28,7 @@ let tweetFilter = (tweet) => {
 // fires Watson request &&
 // builds 'tweetData' obj &&
 // injects 'tweetData' into DB
-let watsonRequest = (tweet) => {
+ function watsonRequest(tweet) {
   let opts = {
     url: "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text=" + tweet.watson_text + "&features=sentiment,keywords",
     path: path,
@@ -39,32 +39,12 @@ let watsonRequest = (tweet) => {
     }
   }
 
-setTimeout(tester(tweet.watson_text), 1000)
-
-  function tester(watson_text) {
-    console.log('thing happening', watson_text);
-    console.log('//// COUNTER', counter);
-    counter++
-    return
-    }
-
-
-
-  // request(opts, watsonCallback)
+  request(opts, watsonCallback)
 
 
   function watsonCallback(error, response, body) {
     body = JSON.parse(body)
     console.log('heres what were getting back post parse', body);
-
-
-    console.log('tweet_pull_id:',tweet.id);
-    console.log('date:',moment(tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en'));
-    console.log('author:',tweet.user.name);
-    console.log('tweet_text:',tweet.text);
-    console.log('watson_score:', body.sentiment.document.score);
-    console.log('watson_label:', body.sentiment.document.label);
-    console.log('profile_img:', tweet.user.profile_image_url);
 
     let tweetData = {
       tweet_pull_id: tweet.id,
@@ -75,7 +55,7 @@ setTimeout(tester(tweet.watson_text), 1000)
       watson_label: body.sentiment.document.label,
       profile_img: tweet.user.profile_image_url
     }
-
+    
     console.log('/////heres what we are inserting ',tweetData);
 
     db('tweets').insert(tweetData).then(() => {
