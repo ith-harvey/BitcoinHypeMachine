@@ -12,16 +12,19 @@
     </div>
     <div class="col-xs-6 heading-descriptor-text">
       <div class="row">
-        <img class="col-xs-4 col-centered" src="images/IBM_Watson_avatar_pos-2-1000x986.png" alt="Watson logo">
-        <img class="col-xs-4 col-centered" src="images/opengraph.png" alt="btc logo">
-        <img class="col-xs-4 col-centered" src="images/Twitter-PNG-HD-1.png" alt="Twitter logo">
+        <img class="col-xs-4 col-centered" src="/images/IBM_Watson_avatar_pos-2-1000x986.png" alt="Watson logo">
+        <img class="col-xs-4 col-centered" src="/images/opengraph.png" alt="btc logo">
+        <img class="col-xs-4 col-centered" src="/images/Twitter-PNG-HD-1.png" alt="Twitter logo">
       </div>
       <p>An API agrigator that filters tweets from influential bitcoin accounts through IBM's Watson AI using sentiment analysis.
       </p>
     </div>
   </nav>
 </header>
+
+
 <div class="col-xs-12 main-disp-contain">
+
   <div class="col-xs-4">
     <div class="watson-total col-xs-12">
       <h4 class="col-xs-12 col-centered">Hype Machine Breakdown</h4>
@@ -38,20 +41,11 @@
         <p id="total-tweets-filtered" class="turn-off-padding"></p>
       </div>
     </div>
+
     <div class="col-xs-12 scroller-title">
-      <h2>Tweets :</h2>
-
-      {{#each tweets}}
-        <h1>this.author</h1>
-        <h3>this.tweet_text</h3>
-        <h3>this.watson_score</h3>
-        <h3>this.watson_label</h3>
-        <h3>this.profile_img</h3>
-        <h3>this.tweet_pul_id</h3>
-        <h3>this.date</h3>
-      {{/each}}
-
+      <h2>Tweets :</h2> {{> tweet}}
     </div>
+
     <div class="twitt-scroller pre-scrollable col-xs-12">
       <div class="tweet-loading-graphic col-xs-12">
         <div class="tweet-loading-graphic row">
@@ -69,10 +63,14 @@
         </div>
       </div>
     </div>
+
   </div>
+
   <div class="graph col-xs-8">
     <!-- <div class="btcwdgt-chart" bw-theme="light"></div> -->
-    <canvas id="btc-price-chart" width="350" height="300"></canvas>
+    <!-- <canvas id="btc-price-chart" width="350" height="300"></canvas> -->
     <canvas id="wats-score-chart" width="350" height="300"></canvas>
   </div>
+
+
 </div>

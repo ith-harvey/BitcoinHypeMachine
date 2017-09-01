@@ -10,6 +10,10 @@ const db = require('./db')
 
 const index = require('./routes/index.js')
 
+hbs.registerPartials(__dirname + '/views/partials');
+
+
+app.use(express.static(path.join(__dirname, '/public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 app.use('/', index)
@@ -18,6 +22,7 @@ db('tweets').select('*').where('date', yesterday).then( result => {
   if (result.length) {
     console.log('already have yesterdays tweets');
     //do nothing
+
   } else {
     apiRequest.initializeTwitter()
     apiRequest.fireTwitWatsonProcess()
