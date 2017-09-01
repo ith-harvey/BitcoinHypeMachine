@@ -11,6 +11,29 @@ const filterFunc = require('./filterFunc.js')
 
 // ensures tweet was created yesterday
 // ensures tweet references Bitcoin / Blockchain
+
+let firstTwitterRequest = function (resolve,reject) {
+  // FIRST request to Twitter
+  return twitter.getTimeline("home",
+    {count: 200},
+    accessToken,
+    accessTokenSecret,
+    function (error, firstSetTweets, response) {
+      if (error) {
+        console.log('this is the first request', error);
+        return reject(error)
+      } else {
+        console.log('total number of tweets from first pull', firstSetTweets.length);
+
+        var idOfLastTweet = firstSetTweets[firstSetTweets.length - 1].id
+        return resolve(firstSetTweets, idOfLastTweet)
+      }
+    }
+  )
+}
+
+
+
 let onlyRelevantTweets = (tweet) => {
       let tweetDateDay = moment(tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').date()
       let relevantTweet = filterFunc.bitBlockRefCheck(tweet.text)
@@ -48,14 +71,14 @@ let tweetFilter = (tweet) => {
 
     let tweetData = {
       tweet_pull_id: tweet.id,
-      date: moment(tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en'),
+      date: moment(tweet.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en').format('LL'),
       author: tweet.user.name,
       tweet_text: tweet.text,
       watson_score: body.sentiment.document.score,
       watson_label: body.sentiment.document.label,
       profile_img: tweet.user.profile_image_url
     }
-    
+
     console.log('/////heres what we are inserting ',tweetData);
 
     db('tweets').insert(tweetData).then(() => {
@@ -70,6 +93,7 @@ let tweetFilter = (tweet) => {
 
 
 module.exports = {
+  firstTwitterRequest,
   onlyRelevantTweets,
   tweetFilter,
   watsonRequest

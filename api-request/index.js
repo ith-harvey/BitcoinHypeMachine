@@ -33,33 +33,14 @@ function initializeTwitter () {
   });
 }
 
-let fireTweetRequest = new Promise( (resolve, reject) => {
-  // FIRST request to Twitter
-  return twitter.getTimeline("home",
-    {count: 200},
-    accessToken,
-    accessTokenSecret,
-    function (error, firstSetTweets, response) {
-      if (error) {
-        console.log('this is the first request', error);
-        return reject(error)
-      } else {
-        console.log('total number of tweets from first pull', firstSetTweets.length);
 
-        var idOfLastTweet = firstSetTweets[firstSetTweets.length - 1].id
-        return resolve(firstSetTweets, idOfLastTweet)
-      }
-    }
-  )
-})
 
 // fire aftermath of twitter retreival :
-  // filter tweets by : day(yesterday), blockchain/bitcoin regex
-  // send tweets to get assessed by Watson
-  // store post everything 'tweetData' obj into DB
-
-
-fireTweetRequest.then( (firstSetTweets,idOfLastTweet) => {
+//   filter tweets by : day(yesterday), blockchain/bitcoin regex
+//   send tweets to get assessed by Watson
+//   store post everything 'tweetData' obj into DB
+function fireTwitWatsonProcess() {
+  new Promise(promiseVariables.firstTwitterRequest).then( firstSetTweets => {
 
   let promises = firstSetTweets.filter(promiseVariables.onlyRelevantTweets).map(promiseVariables.tweetFilter)
 
@@ -69,7 +50,7 @@ fireTweetRequest.then( (firstSetTweets,idOfLastTweet) => {
     console.log('promise chain has finnished',result.length);
 
     let timer = setInterval( ( ) => {
-        promiseVariables.watsonRequest(result[counter])
+        // promiseVariables.watsonRequest(result[counter])
         counter++
         if (counter === result.length) {
           clearInterval(timer)
@@ -77,9 +58,10 @@ fireTweetRequest.then( (firstSetTweets,idOfLastTweet) => {
       }, 1000)
 
   })
-})
+  })
+}
 
 module.exports = {
-  fireTweetRequest,
+  fireTwitWatsonProcess,
   initializeTwitter
 }

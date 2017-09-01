@@ -4,6 +4,9 @@ const port = 8000
 const hbs = require('hbs')
 const apiRequest = require('./api-request/index.js')
 const path = require('path')
+const moment = require('moment');
+const yesterday = moment().subtract(1, 'day').format('LL')
+const db = require('./db')
 
 const index = require('./routes/index.js')
 
@@ -11,8 +14,15 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 app.use('/', index)
 
-apiRequest.initializeTwitter()
-apiRequest.fireTweetrequest
+db('tweets').select('*').where('date', yesterday).then( result => {
+  if (result.length) {
+    console.log('already have yesterdays tweets');
+    //do nothing
+  } else {
+    apiRequest.initializeTwitter()
+    apiRequest.fireTwitWatsonProcess()
+  }
+})
 
 app.use((err, req, res, next) => {
   res.send(err).status(err.status)
