@@ -1,20 +1,18 @@
 {{#each tweets}}
-
-  <p>{{this.date}}</p>
-
-  <div class="tweet-box col-xs-12">
-    <div class="col-xs-10 turn-off-padding">
-      <img class="col-xs-2 thumbnail img-float-text-wrap" src={{this.profile_img}}>
-      <h6 class=" username col-xs-8">{{this.author}}</h4>
-    </div>
-    <div class="col-xs-2">
-      <p>{{this.watson_label}}</p>
-      <p>{{this.watson_score}}</p>
-    </div>
-    <div class="tweet-txt col-xs-12">
-      <p>{{this.tweet_text}}</p>
+  <div class="row">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-content">
+            <div class="card-title col s12">
+              <img class="img-tweet-prof circle col s3" src={{this.profile_img}}>
+              <h6 class="username col s9 valign-wrapper">{{this.author}}</h6>
+            </div>
+            <p class="tweet-text">{{this.tweet_text}}</p>
+            <!-- <p>{{this.date}}</p> -->
+            <a class="btn-floating halfway-fab waves-effect waves-light {{ifColorSet this.watson_score}} center-align" style="top: 8px; right: 8px;"><p>{{this.watson_score}}</p></a>
+        </div>
+      </div>
     </div>
   </div>
-
 
 {{/each}}

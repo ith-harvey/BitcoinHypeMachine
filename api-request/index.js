@@ -1,38 +1,11 @@
 
 const knex = require('knex')
-
-const twitterAPI = require('node-twitter-api');
 const dotenv = require('dotenv').config()
 const promiseVariables = require('./promise-variables.js')
 const rp = require('request-promise');
 const moment = require('moment');
 const yesterday = moment().subtract(1, 'day').date()
 const request = require('request')
-
-let accessToken = process.env.ACCESS_TOKEN
-let accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
-
-let allTweets
-let rqToken
-let rqTokenSecret
-
-var twitter = new twitterAPI({
-  consumerKey: process.env.TWITTER_CONSUMER_KEY,
-  consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-  callback: process.env.TWITTER_CONSUMER_CALLBACK
-});
-
-function initializeTwitter () {
-  twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results) {
-    if (error) {
-      console.log("Error getting OAuth request token : " + error);
-    } else {
-      rqToken = requestToken
-      rqTokenSecret = requestTokenSecret
-    }
-  });
-}
-
 
 
 // fire aftermath of twitter retreival :
@@ -50,18 +23,16 @@ function fireTwitWatsonProcess() {
     console.log('promise chain has finnished',result.length);
 
     let timer = setInterval( ( ) => {
-        // promiseVariables.watsonRequest(result[counter])
+        promiseVariables.watsonRequest(result[counter])
         counter++
         if (counter === result.length) {
           clearInterval(timer)
         }
       }, 1000)
-
   })
   })
 }
 
 module.exports = {
   fireTwitWatsonProcess,
-  initializeTwitter
 }

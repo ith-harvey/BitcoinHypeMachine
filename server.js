@@ -3,6 +3,7 @@ const app = express()
 const port = 8000
 const hbs = require('hbs')
 const apiRequest = require('./api-request/index.js')
+const promiseVariables = require('./api-request/promise-variables.js')
 const path = require('path')
 const moment = require('moment');
 const yesterday = moment().subtract(1, 'day').format('LL')
@@ -11,6 +12,16 @@ const db = require('./db')
 const index = require('./routes/index.js')
 
 hbs.registerPartials(__dirname + '/views/partials');
+
+hbs.registerHelper('ifColorSet', function(score) {
+  if (score > 0) {
+    return 'blue'
+  } else if (score < 0) {
+    return 'red'
+  } else {
+    return 'blue-grey lighten-5'
+  }
+});
 
 
 app.use(express.static(path.join(__dirname, '/public')))
@@ -24,7 +35,7 @@ db('tweets').select('*').where('date', yesterday).then( result => {
     //do nothing
 
   } else {
-    apiRequest.initializeTwitter()
+    promiseVariables.initializeTwitter()
     apiRequest.fireTwitWatsonProcess()
   }
 })

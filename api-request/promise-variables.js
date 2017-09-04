@@ -3,11 +3,37 @@ const db = require('../db')
 const moment = require('moment');
 const yesterday = moment().subtract(1, 'day').date()
 const request = require('request')
+const twitterAPI = require('node-twitter-api');
 const path = require('path')
+
+let accessToken = process.env.ACCESS_TOKEN
+let accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
+let rqToken
+let rqTokenSecret
 
 var counter = 0
 
 const filterFunc = require('./filterFunc.js')
+
+
+var twitter = new twitterAPI({
+  consumerKey: process.env.TWITTER_CONSUMER_KEY,
+  consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+  callback: process.env.TWITTER_CONSUMER_CALLBACK
+});
+
+function initializeTwitter () {
+  twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results) {
+    if (error) {
+      console.log("Error getting OAuth request token : " + error);
+    } else {
+      rqToken = requestToken
+      rqTokenSecret = requestTokenSecret
+    }
+  });
+}
+
+
 
 // ensures tweet was created yesterday
 // ensures tweet references Bitcoin / Blockchain
@@ -95,6 +121,7 @@ let tweetFilter = (tweet) => {
 module.exports = {
   firstTwitterRequest,
   onlyRelevantTweets,
+  initializeTwitter,
   tweetFilter,
   watsonRequest
 }

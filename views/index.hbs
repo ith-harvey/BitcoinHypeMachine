@@ -1,76 +1,53 @@
-<header>
-  <nav class="col-xs-12">
-    <div class="container col-xs-6">
-      <h1>The Hype Machine</h1>
-      <ul class="nav nav-pills nav-cust">
-        <li><a href="#">Hype</a></li>
-        <li>
-          <p>|</p>
-        </li>
-        <li><a href="localhost:8000/login">Twitter Login</a></li>
+
+<nav class="col s12">
+  <div class="row">
+    <div>
+      <ul class="nav nav-pills nav-cust valign-wrapper">
+        <li class="col s4"><h5>The Hype Machine</h5></li>
+        <li class="col s2 center-align">Total Tweets filtered: </li>
+        <li class="col s2 center-align"><a href="#">about</a></li>
+        <li class="col s3"><img class="col s2 col-centered" src="/images/IBM_Watson_avatar_pos-2-1000x986.png" alt="Watson logo"><img class="col s2 col-centered" src="/images/opengraph.png" alt="btc logo"><img class="col s2 col-centered" src="/images/Twitter-PNG-HD-1.png" alt="Twitter logo"></li>
       </ul>
     </div>
-    <div class="col-xs-6 heading-descriptor-text">
-      <div class="row">
-        <img class="col-xs-4 col-centered" src="/images/IBM_Watson_avatar_pos-2-1000x986.png" alt="Watson logo">
-        <img class="col-xs-4 col-centered" src="/images/opengraph.png" alt="btc logo">
-        <img class="col-xs-4 col-centered" src="/images/Twitter-PNG-HD-1.png" alt="Twitter logo">
-      </div>
-      <p>An API agrigator that filters tweets from influential bitcoin accounts through IBM's Watson AI using sentiment analysis.
-      </p>
-    </div>
-  </nav>
-</header>
+  </div>
+</nav>
 
+<div class="container">
 
-<div class="col-xs-12 main-disp-contain">
+  <div class="row">
+  <div class=" col s12">
+    <div class="col s5">
+      <div class="col s12 scroller-title">
+        {{> tweet}}
+      </div>
 
-  <div class="col-xs-4">
-    <div class="watson-total col-xs-12">
-      <h4 class="col-xs-12 col-centered">Hype Machine Breakdown</h4>
-      <div class="col-xs-6 turn-off-padding">
-        <h5 class="mini-heading">Tweets Pulled</h5>
-      </div>
-      <div class="col-xs-6 turn-off-padding">
-        <h5 class="mini-heading">Tweets Filtered</h5>
-      </div>
-      <div class="col-xs-6">
-        <p id="total-tweets-pulled" class="turn-off-padding"></p>
-      </div>
-      <div class="col-xs-6">
-        <p id="total-tweets-filtered" class="turn-off-padding"></p>
-      </div>
-    </div>
-
-    <div class="col-xs-12 scroller-title">
-      <h2>Tweets :</h2> {{> tweet}}
-    </div>
-
-    <div class="twitt-scroller pre-scrollable col-xs-12">
-      <div class="tweet-loading-graphic col-xs-12">
-        <div class="tweet-loading-graphic row">
-          <img class="col-xs-4 col-xs-offset-5" src="images/Twitter-PNG-HD-1.png" alt="Twitter logo">
-        </div>
-        <div class="tweet-loading-graphic row">
-          <div class="col-xs-4 col-xs-offset-4">
-            <div id="loader-circle" class="tweet-loading-graphic"></div>
+      <div class="twitt-scroller pre-scrollable col s12">
+        <div class="tweet-loading-graphic col s12">
+          <div class="tweet-loading-graphic row">
+            <img class="col s4 col-xs-offset-5" src="images/Twitter-PNG-HD-1.png" alt="Twitter logo">
           </div>
-        </div>
-        <div class="tweet-loading-graphic row">
-          <div class="col-xs-11 col-xs-offset-1">
-            <q>If you build it, Tweets will come...</q>
+          <div class="tweet-loading-graphic row">
+            <div class="col s4 col-xs-offset-4">
+              <div id="loader-circle" class="tweet-loading-graphic"></div>
+            </div>
+          </div>
+          <div class="tweet-loading-graphic row">
+            <div class="col s11 col-xs-offset-1">
+              <q>If you build it, Tweets will come...</q>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
+    <div class="col s7 graph ">
+        <p>An API agrigator that filters tweets from influential bitcoin accounts through IBM's Watson AI using sentiment analysis.
+        </p>
+      <!-- <div class="btcwdgt-chart" bw-theme="light"></div> -->
+      <!-- <canvas id="btc-price-chart" width="350" height="300"></canvas> -->
+      <canvas id="wats-score-chart" width="350" height="300"></canvas>
+    </div>
   </div>
 
-  <div class="graph col-xs-8">
-    <!-- <div class="btcwdgt-chart" bw-theme="light"></div> -->
-    <!-- <canvas id="btc-price-chart" width="350" height="300"></canvas> -->
-    <canvas id="wats-score-chart" width="350" height="300"></canvas>
   </div>
-
-
 </div>

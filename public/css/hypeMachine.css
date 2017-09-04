@@ -3,6 +3,9 @@ html {
   font-size: 16px;
 }
 
+.tweet-box p {
+  font-size: .8rem;
+}
 .nav-cust {
   padding:1px;
   margin-bottom: 2rem;
@@ -91,6 +94,10 @@ html {
   margin-bottom: 5rem;
 }
 
+.img-tweet-prof {
+    width: 4rem !important;
+}
+
 .img-float-text-wrap {
   float: left;
   margin:.3rem;
@@ -103,8 +110,7 @@ html {
 }
 
 .tweet-text {
-  padding:.1rem;
-  margin-bottom: .5rem;
+  font-size: .9rem;
 }
 
 .tweet-box {
@@ -123,21 +129,6 @@ html {
 
 .neutral {
   background-color: rgba(220,220,220,0.3);
-}
-
-.score-bubble {
-  text-align: center;
-  padding: 0 1.5rem 0;
-
-}
-
-.inside-score-bub {
-  border-radius: 10px;
-  border: .5px solid grey;
-}
-
-.score-bubble p {
-  margin: 0
 }
 
 #total-tweets-pulled {
