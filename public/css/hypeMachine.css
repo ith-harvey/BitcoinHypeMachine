@@ -3,9 +3,21 @@ html {
   font-size: 16px;
 }
 
-.tweet-box p {
-  font-size: .8rem;
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 85%;
 }
+
+@media only screen and (min-width: 601px)
+  .container {
+    width: 85%;
+}
+@media only screen and (min-width: 993px)
+  .container {
+    width: 70%;
+}
+
 .nav-cust {
   padding:1px;
   margin-bottom: 2rem;
@@ -24,65 +36,6 @@ html {
   padding: 0;
 
 }
-.watson-total{
-  text-align: center;
- }
-
-.twitt-scroller, .tweet-box, .watson-total{
-  border: 1px solid grey;
-  border-radius: 10px;
-
-}
-
-.twitt-scroller {
-  margin-top: 2rem;
-}
-
-
-.tweet-loading-graphic {
-  display: block;
-
-}
-
-.tweet-loading-graphic > * {
-  margin-top: .75rem;
-
-}
-
-.tweet-loading-graphic q {
-  margin-bottom: 2rem;
-}
-
-.tweet-loading-graphic img {
-  width:3rem;
-  height:3rem;
-  padding: 0;
-}
-.col-centered {
-  float: none;
-  margin: 0 auto;
-}
-
-
-#loader-circle {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    margin: 0px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.twitt-scroller, .tweet-box, .sentiment {
-  padding: 0rem;
-
-}
 
 .pre-scrollable {
   max-height: 70rem;
@@ -90,7 +43,7 @@ html {
 
 .twitt-scroller {
   overflow-y: scroll;
-  !height: 70rem;
+  height: 75vh;
   margin-bottom: 5rem;
 }
 
