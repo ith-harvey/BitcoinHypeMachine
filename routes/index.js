@@ -12,23 +12,29 @@ router.get('/', (req,res,next) => {
         return tweet
       })
 
-      console.log('///// GRAPH TWEETS', tweets[0]);
-      let graphTweetsObj = {}
-
-      let graphTweets = tweets.reduce( (accumulator, tweet, currentIndex, array) => {
-        if(accumulator.length && graphTweetsObj[tweet.date]) {
-          console.log('date matches', graphTweetsObj[tweet.date])
+      let graphTweets = tweets.reduce( (accumulator, tweet) => {
+        // if this date already exists in the object
+        if(accumulator[tweet.date]) {
+          // push new sentiment into arr
+          accumulator[tweet.date].push(Number(tweet.watson_score))
         } else {
-          graphTweetsObj[tweet.date] = tweet.date
-          accumulator.push(tweet.date)
-          // avg sentiment arr
+          //set new date's sentiment
+          accumulator[tweet.date] = [Number(tweet.watson_score)]
         }
         // console.log('accum before return', accumulator);
         return accumulator
-      }, [])
-      console.log('///// GRAPH TWEETS 1', graphTweetsObj);
-      console.log('///// GRAPH TWEETS 2', graphTweets);
+      }, {})
 
+      for (tweet in graphTweets) {
+        console.log('what we want to reduce', graphTweets[tweet]);
+        let sum = graphTweets[tweet].reduce( (acc, sentiment) => {
+          acc += sentiment
+          return acc
+        },0)
+        graphTweets[tweet] = sum / tweet.length
+        console.log('sum of sentiment', graphTweets[tweet]);
+      }
+      console.log('sum of sentiment', graphTweets);
       res.render('index', {tweets, btcPrices});
     })
   }).catch( error => {
