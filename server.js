@@ -23,6 +23,10 @@ hbs.registerHelper('ifColorSet', function(score) {
   }
 });
 
+hbs.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+})
+
 
 app.use(express.static(path.join(__dirname, '/public')))
 app.set('views', path.join(__dirname, 'views'))
