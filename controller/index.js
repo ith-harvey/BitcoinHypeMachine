@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 
 function tweetToDecimal(tweets) {
   let result = tweets.map( tweet => {
@@ -37,10 +39,10 @@ function graphTweetObj(tweets) {
         // sentimentAvg: [avgsent-day1,avgsent-day2,...]
   //   }
   let graphfinalTweets = {}
-  graphfinalTweets.days = Object.keys(graphTweets)
-  graphfinalTweets.sentimentAvg = []
+  graphfinalTweets.sentimentAvg = [], graphfinalTweets.days = []
   for (i = 0; i < Object.keys(graphTweets).length; i++) {
     graphfinalTweets.sentimentAvg.push(graphTweets[Object.keys(graphTweets)[i]])
+    graphfinalTweets.days.push(moment(Object.keys(graphTweets)[i]).format('LL'))
   }
   return graphfinalTweets
 }

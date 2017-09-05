@@ -5,7 +5,7 @@ let finalWatsonObj
 let myprintNumberofRequestCalls = 0
 
 
-console.log('here we go', window.tweets);
+console.log('here we go', window.graphTweets);
 // chart variables
 var myChartPrice
 var myChartWats
@@ -14,8 +14,17 @@ var myChartWats
 let btcObj = {}
 let btcChart = $("#btc-price-chart");
 let watsChart = $("#wats-score-chart");
-let dayLabels = ["Sat Mar 11", "Sun Mar 12", "Mon Mar 13", "Tue Mar 14"]
+let dayLabels = window.graphTweets.days
+let watsSentData= window.graphTweets.sentimentAvg
 
+let presetData = {}
+presetData.posData = [], presetData.negData =[], presetData.neutData = []
+console.log('what we call foreach on', watsSentData);
+watsSentData.forEach( sentiment => {
+  presetData.posData.push(1)
+  presetData.negData.push(-1)
+  presetData.neutData.push(0)
+})
 
 
 new Chart(watsChart, {
@@ -24,7 +33,7 @@ new Chart(watsChart, {
     labels: dayLabels,
     datasets: [{
         label: 'Running Sentiment',
-        data: [0.5,.3,-.4,1],
+        data: watsSentData,
         fill: false,
         borderColor: ['rgba(0,106,226,1)'],
         borderWidth: 1
@@ -32,21 +41,21 @@ new Chart(watsChart, {
 
       {
         label: 'Positive',
-        data: [1, 1, 1, 1],
+        data: presetData.posData,
         fill: false,
         borderColor: ['rgba(0,106,226,1)'],
         borderWidth: 1
       },
       {
         label: 'Neutral',
-        data: [0, 0, 0, 0],
+        data: presetData.neutData,
         fill: false,
         borderColor: ['rgb(211,211,211)'],
         borderWidth: 1
       },
       {
         label: 'Negative',
-        data: [-1, -1, -1, -1],
+        data: presetData.negData,
         fill: false,
         borderColor: ['rgba(255,99,132,1)'],
         borderWidth: 1
