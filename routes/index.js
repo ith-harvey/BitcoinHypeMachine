@@ -11,18 +11,23 @@ router.get('/', (req,res,next) => {
         tweet.watson_score = Number(tweet.watson_score).toFixed(2)
         return tweet
       })
+
       console.log('///// GRAPH TWEETS', tweets[0]);
+      let graphTweetsObj = {}
 
       let graphTweets = tweets.reduce( (accumulator, tweet, currentIndex, array) => {
-        if(!accumulator.indexOf(tweet.date)) {
-          accumulator.push(tweet.date)
+        if(accumulator.length && graphTweetsObj[tweet.date]) {
+          console.log('date matches', graphTweetsObj[tweet.date])
         } else {
+          graphTweetsObj[tweet.date] = tweet.date
+          accumulator.push(tweet.date)
           // avg sentiment arr
         }
+        // console.log('accum before return', accumulator);
         return accumulator
       }, [])
-
-      console.log('///// GRAPH TWEETS', graphTweets);
+      console.log('///// GRAPH TWEETS 1', graphTweetsObj);
+      console.log('///// GRAPH TWEETS 2', graphTweets);
 
       res.render('index', {tweets, btcPrices});
     })
