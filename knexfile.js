@@ -1,6 +1,6 @@
 
 const path = require('path')
-
+const knex = require('knex')('production')
 module.exports = {
   development: {
     client: 'pg',
@@ -20,6 +20,7 @@ module.exports = {
     },
     seeds: {
       directory: path.join(__dirname, 'db', 'seeds')
-    }
+    },
+    ssl: true
   }
 }
