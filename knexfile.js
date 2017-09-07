@@ -1,8 +1,8 @@
 
 const path = require('path')
-const knex = require('knex')('production')
+
 module.exports = {
-  'development': {
+  development: {
     client: 'pg',
     connection: 'postgres://localhost/hype_machine_db',
     migrations: {
@@ -12,7 +12,7 @@ module.exports = {
       directory: path.join(__dirname, 'db', 'seeds')
     }
   },
-  'production': {
+  production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
     migrations: {
