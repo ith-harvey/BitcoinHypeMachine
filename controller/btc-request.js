@@ -9,7 +9,6 @@ function btcRequest () {
       method: "GET",
       type: 'json'
   }
-
   request(opts,btcResponse)
 
   function btcResponse (error, response, body) {
