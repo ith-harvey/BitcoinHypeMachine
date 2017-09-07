@@ -9,12 +9,13 @@ console.log('here we go', window.graphTweets);
 var myChartPrice
 var myChartWats
 
-
 let btcObj = {}
 let btcChart = $("#btc-price-chart");
 let watsChart = $("#wats-score-chart");
-let dayLabels = window.graphTweets.days
-let watsSentData= window.graphTweets.sentimentAvg
+let tweetDayLabels = window.graphFinal.tweets.days
+let btcDayLabels = window.graphFinal.btcPrices.days
+let watsSentData = window.graphFinal.tweets.sentimentAvg
+let btcData = window.graphFinal.btcPrices.prices
 
 let presetData = {}
 presetData.posData = [], presetData.negData =[], presetData.neutData = []
@@ -29,7 +30,7 @@ watsSentData.forEach( sentiment => {
 new Chart(watsChart, {
   type: 'line',
   data: {
-    labels: dayLabels,
+    labels: tweetDayLabels,
     datasets: [{
         label: 'Running Sentiment',
         data: watsSentData,
@@ -80,7 +81,7 @@ new Chart(watsChart, {
 new Chart(btcChart, {
   type: 'line',
   data: {
-    labels: dayLabels,
+    labels: btcDayLabels,
     datasets: [{
       label: 'BTC Price',
       data: btcData,

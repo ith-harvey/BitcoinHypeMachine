@@ -15,7 +15,6 @@ var counter = 0
 
 const filterFunc = require('./filterFunc.js')
 
-
 var twitter = new twitterAPI({
   consumerKey: process.env.TWITTER_CONSUMER_KEY,
   consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
@@ -32,7 +31,6 @@ function initializeTwitter () {
     }
   });
 }
-
 
 
 // ensures tweet was created yesterday
@@ -73,7 +71,6 @@ let tweetFilter = (tweet) => {
   return tweet
 }
 
-
 // fires Watson request &&
 // builds 'tweetData' obj &&
 // injects 'tweetData' into DB
@@ -93,7 +90,6 @@ let tweetFilter = (tweet) => {
 
   function watsonCallback(error, response, body) {
     body = JSON.parse(body)
-    console.log('heres what were getting back post parse', body);
 
     let tweetData = {
       tweet_pull_id: tweet.id,
@@ -104,11 +100,8 @@ let tweetFilter = (tweet) => {
       watson_label: body.sentiment.document.label,
       profile_img: tweet.user.profile_image_url
     }
-
-    console.log('/////heres what we are inserting ',tweetData);
-
-    db('tweets').insert(tweetData).then(() => {
-      console.log('db injection was succesfull');
+    db('tweets').insert(tweetData).then( () => {
+      console.log('Tweet db injection was succesfull');
     }).catch(error => {
       console.log(error);
     })

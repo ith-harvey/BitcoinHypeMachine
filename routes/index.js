@@ -1,5 +1,6 @@
-const dataManip = require('../controller/index.js')
-const btcFunc = require('../controller/btc-request.js')
+const dataManipTweet = require('../controller/dataManipTweets.js')
+const dataManipBtc = require('../controller/dataManipBtc.js')
+const btcFunc = require('../api-request/btc-request.js')
 const express = require('express')
 const router = express.Router();
 const db = require('../db')
@@ -10,12 +11,14 @@ router.get('/', (req,res,next) => {
     db('btc_prices').select('*').then( btcPrices => {
 
       //perform data manipulation
-      tweets = dataManip.tweetToDecimal(tweets)
-      let graphFinalTweets = dataManip.graphTweetObj(tweets)
-      btcFunc.btcRequest()
+      tweets = dataManipTweet.tweetToDecimal(tweets)
 
+      let graphFinal = {
+        tweets: dataManipTweet.graphObj(tweets),
+        btcPrices: dataManipBtc.graphObj(btcPrices)
+        }
 
-      res.render('index', {tweets, btcPrices, graphFinalTweets});
+      res.render('index', {tweets, btcPrices, graphFinal});
     })
   }).catch( error => {
   console.log(error);

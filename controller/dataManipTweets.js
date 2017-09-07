@@ -10,7 +10,7 @@ function tweetToDecimal(tweets) {
 }
 
 
-function graphTweetObj(tweets) {
+function graphObj(tweets) {
   let graphTweets = tweets.reduce( (accumulator, tweet) => {
     // if this date already exists in the object
     if(accumulator[tweet.date]) {
@@ -48,6 +48,6 @@ function graphTweetObj(tweets) {
 }
 
 module.exports = {
-  graphTweetObj,
+  graphObj,
   tweetToDecimal
 }
