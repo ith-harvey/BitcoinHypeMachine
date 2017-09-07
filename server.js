@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 8000
+const port = process.env.PORT || '8000'
 const hbs = require('hbs')
 const apiRequest = require('./api-request/index.js')
 const promiseVariables = require('./api-request/promise-variables.js')
