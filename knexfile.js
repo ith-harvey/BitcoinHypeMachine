@@ -42,7 +42,7 @@ module.exports = {
   },
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: 'postgres://localhost/hype_machine_db',
     migrations: {
       directory: path.join(__dirname, 'db', 'migrations')
     },
