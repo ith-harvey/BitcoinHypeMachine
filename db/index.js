@@ -1,10 +1,6 @@
+const env = process.env.NODE_ENV || 'development'
+const config = require('../knexfile')[env]
+const knex = require('knex')
+const connection = knex(config)
 
-const env = process.env.DATABASE_URL || 'development';
-const config = require('../knexfile.js');
-const knex = require('knex')(config[env])
-
-
-
-
-
-module.exports = knex
+module.exports = connection
